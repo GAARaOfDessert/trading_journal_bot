@@ -2,6 +2,8 @@ import json
 import bcrypt
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, ConversationHandler, filters
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CallbackQueryHandler
 
 # Telegram bot token
 BOT_TOKEN = "7613652813:AAFnKLGASHpx7thBOs48eIt4eSyGFbiFO7c"
@@ -130,8 +132,7 @@ async def handle_menu_choice(update: Update, context: ContextTypes.DEFAULT_TYPE)
     elif choice == "📊 View Performance":
         return await view_performance(update, context)
     elif choice == "📁 View Trades":
-        await update.message.reply_text("📄 Trade history feature is coming soon.")
-        return await show_main_menu(update, context)
+        return await view_trades(update, context)
     elif choice == "🚪 Log Out":
         context.user_data.clear()
         await update.message.reply_text("🚪 Logged out successfully. Type /start to begin again.")
@@ -240,7 +241,91 @@ async def view_performance(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(summary, parse_mode="Markdown")
 
+async def view_trades(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    journal_name = context.user_data.get("journal_name")
+    if not journal_name:
+        await update.message.reply_text("⚠️ You're not logged in. Use /start to begin.")
+        return
 
+    data = load_data()
+    user_data = data.get(journal_name)
+    trades = user_data.get("trades", [])
+
+    if not trades:
+        await update.message.reply_text("📭 No trades found in your journal.")
+        return
+
+    trade_buttons = []
+    emoji_map = {"w": "🟢", "l": "🔴", "b": "⚪"}
+
+    for i, trade in enumerate(trades):
+        outcome = trade.get("outcome", "").lower()
+        emoji = emoji_map.get(outcome, "❓")
+        trade_label = f"{emoji} {trade['trade']}"
+        trade_buttons.append([InlineKeyboardButton(trade_label, callback_data=f"view_trade_{i}")])
+
+    # Show delete option
+    trade_buttons.append([InlineKeyboardButton("🗑️ Delete a Trade", callback_data="delete_trade")])
+
+    reply_markup = InlineKeyboardMarkup(trade_buttons)
+    await update.message.reply_text("📒 Your Trades:", reply_markup=reply_markup)
+
+    return MENU
+
+async def handle_trade_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    journal_name = context.user_data.get("journal_name")
+    data = load_data()
+    trades = data[journal_name]["trades"]
+
+    if query.data.startswith("view_trade_"):
+        index = int(query.data.split("_")[-1])
+        if 0 <= index < len(trades):
+            trade = trades[index]
+            caption = (
+                f"*{trade['trade']}*\n"
+                f"📸 Photo below\n"
+                f"⚖️ RRR at Entry: {trade['rrr_entry']}\n"
+                f"📊 Outcome: {trade['outcome'].upper()}"
+            )
+            await query.message.reply_photo(
+                photo=trade['photo_file_id'],
+                caption=caption,
+                parse_mode="Markdown"
+            )
+        else:
+            await query.message.reply_text("⚠️ Trade not found.")
+    elif query.data == "delete_trade":
+        await list_trades_for_deletion(update, context)
+
+async def list_trades_for_deletion(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    journal_name = context.user_data.get("journal_name")
+    data = load_data()
+    trades = data[journal_name]["trades"]
+
+    delete_buttons = [
+        [InlineKeyboardButton(f"Delete {trade['trade']}", callback_data=f"confirm_delete_{i}")]
+        for i, trade in enumerate(trades)
+    ]
+    markup = InlineKeyboardMarkup(delete_buttons)
+    await query.message.reply_text("Select a trade to delete:", reply_markup=markup)
+
+async def confirm_trade_delete(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    index = int(query.data.split("_")[-1])
+    journal_name = context.user_data.get("journal_name")
+    data = load_data()
+
+    try:
+        removed_trade = data[journal_name]["trades"].pop(index)
+        save_data(data)
+        await query.message.reply_text(f"✅ {removed_trade['trade']} deleted.")
+    except:
+        await query.message.reply_text("❌ Failed to delete trade.")
 
 # Main entry
 if __name__ == "__main__":
@@ -263,5 +348,9 @@ if __name__ == "__main__":
     fallbacks=[],
 )
     app.add_handler(conv_handler)
+
+    app.add_handler(CallbackQueryHandler(handle_trade_callback, pattern="^view_trade_.*|delete_trade|confirm_delete_.*$"))
+    
     print("Bot running...")
     app.run_polling()
+   
