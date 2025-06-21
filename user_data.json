@@ -1,0 +1,73 @@
+{
+    "Gaara": {
+        "user_id": 6734747861,
+        "password": "$2b$12$TaBblBoKUt0Cxphm3OJq7OKQvBqN.Z78KlUs3GF6HNn2ITp23/Olu",
+        "trades": []
+    },
+    "Quadri": {
+        "user_id": 7533202598,
+        "password": "$2b$12$DBb2fRIh1qsauwrREeZSRu/KoiElx0uIXkohQmSORYqVppxxpqqRW",
+        "trades": [
+            {
+                "trade": "Trade 1",
+                "photo_file_id": "AgACAgQAAxkBAAOjaFae4L7ebZRauxz128jCF-6LBJkAAkLJMRsSz7hSttqbA_HiSYkBAAMCAAN5AAM2BA",
+                "rrr_entry": "1:3",
+                "outcome": "Win 4R"
+            },
+            {
+                "trade": "Trade 2",
+                "photo_file_id": "AgACAgQAAxkBAAIBvmhWwMaJK84JXWkAAWxocdOGu9B6EQACy8UxG5mAuFIitsyswRVybwEAAwIAA3kAAzYE",
+                "rrr_entry": "1:6",
+                "outcome": "Loss -1R"
+            },
+            {
+                "trade": "Trade 3",
+                "photo_file_id": "AgACAgQAAxkBAAIB92hWxoTA9Vf8Umdl0WrMTg0_0j75AALWxTEbmYC4Ug8seAh223k8AQADAgADeQADNgQ",
+                "rrr_entry": "1:6",
+                "outcome": "Loss 1R"
+            },
+            {
+                "trade": "Trade 4",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:6",
+                "outcome": "L"
+            },
+            {
+                "trade": "Trade 5",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:3",
+                "outcome": "w"
+            },
+            {
+                "trade": "Trade 6",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:4",
+                "outcome": "b"
+            },
+            {
+                "trade": "Trade 7",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:2",
+                "outcome": "b"
+            },
+            {
+                "trade": "Trade 8",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:4",
+                "outcome": "w"
+            },
+            {
+                "trade": "Trade 9",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:5",
+                "outcome": "w"
+            },
+            {
+                "trade": "Trade 10",
+                "photo_file_id": "AgACAgQAAxkBAAICC2hWykwkvmcZb8iRDFWlt0bRQQbaAAL2xTEbmYC4Uk1q2nZhyP_VAQADAgADeQADNgQ",
+                "rrr_entry": "1:5",
+                "outcome": "w"
+            }
+        ]
+    }
+}
