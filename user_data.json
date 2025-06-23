@@ -69,5 +69,10 @@
                 "outcome": "w"
             }
         ]
+    },
+    "Bot": {
+        "user_id": 7533202598,
+        "password": "$2b$12$7kkLTzPOrG5fHxdB18C5U.Z7IRNdDPp6eEKuBgDxObAB37UtSjVr2",
+        "trades": []
     }
 }

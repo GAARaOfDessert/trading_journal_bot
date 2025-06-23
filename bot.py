@@ -3,10 +3,12 @@ import bcrypt
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, ConversationHandler, filters
 from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Bot
 from telegram.ext import CallbackQueryHandler
 
 # Telegram bot token
 BOT_TOKEN = "7613652813:AAFnKLGASHpx7thBOs48eIt4eSyGFbiFO7c"
+bot = Bot(token=BOT_TOKEN)
 
 # States
 CHOOSING, REGISTER_NAME, REGISTER_PW, REGISTER_CONFIRM, LOGIN_NAME, LOGIN_PW = range(6)
@@ -354,3 +356,14 @@ if __name__ == "__main__":
     print("Bot running...")
     app.run_polling()
    
+def broadcast_prediction(message: str):
+    with open("user_data.json", "r") as f:
+        data = json.load(f)
+
+    for username, info in data.items():
+        chat_id = info.get("user_id")
+        if chat_id:
+            try:
+                bot.send_message(chat_id=chat_id, text=message)
+            except Exception as e:
+                print(f"❌ Failed to send to {username}: {e}")
